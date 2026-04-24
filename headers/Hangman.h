@@ -7,7 +7,7 @@
 #include <stdbool.h>
 
 #define MAX_TRIES 6
-#define ALPHA_SIZE 26
+#define ALPHA_SIZE 27
 typedef struct Hangman
 {
     char *answer;
