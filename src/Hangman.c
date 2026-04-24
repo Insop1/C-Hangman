@@ -93,7 +93,8 @@ void HM_Guess(Hangman *hangman, char guess)
         hangman->gameEnd = true;
         return;
     }   
-    int len = strlen(hangman->correct);
+    
+    len = strlen(hangman->correct);
     for (int i = 0; i < len; i++)
     {
         if (hangman->correct[i] == '_')
