@@ -8,7 +8,8 @@ static char* HM_FilterAnswer(char *answer)
         exit(1);
     }
     int j = 0;
-    for(int i = 0; i < strlen(answer); i++)
+    int len = strlen(answer);
+    for(int i = 0; i < len; i++)
     {
         if(isalpha(answer[i]) || answer[i] == ' ')
         {
@@ -34,7 +35,8 @@ Hangman HM_CreateHangman(char *answer)
         printf("memory fail.\n");
         exit(1);
     }
-    for (int i = 0; i < strlen(hangman.answer); i++) 
+    int len = strlen(answer);
+    for (int i = 0; i < len; i++) 
     {
         hangman.correct[i] = (hangman.answer[i] == ' ') ? ' ' : '_';
     }
@@ -69,7 +71,8 @@ void HM_Guess(Hangman *hangman, char guess)
     }
 
     bool wasWrong = true;
-    for(int i = 0; i < strlen(hangman->answer); i++)
+    int len = strlen(hangman->answer);
+    for(int i = 0; i < len; i++)
     {
         if(tolower(hangman->answer[i]) == letter)
         {
@@ -90,7 +93,8 @@ void HM_Guess(Hangman *hangman, char guess)
         hangman->gameEnd = true;
         return;
     }   
-    for (int i = 0; i < strlen(hangman->correct); i++)
+    int len = strlen(hangman->correct);
+    for (int i = 0; i < len; i++)
     {
         if (hangman->correct[i] == '_')
         {
