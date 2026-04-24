@@ -1,10 +1,10 @@
-#include <Hangman.h>
+#include "Hangman.h"
 
 static char* HM_FilterAnswer(char *answer)
 {
     char *filtered = (char *)malloc(strlen(answer) + 1); 
     if (filtered == NULL) {
-        perror("memory failed for filtered\n");
+        fprintf(stderr, "memory failed for filtered\n");
         exit(1);
     }
     int j = 0;
@@ -32,10 +32,10 @@ Hangman HM_CreateHangman(char *answer)
     hangman.correct = (char*)malloc(strlen(hangman.answer) + 1);
     if (hangman.correct == NULL) 
     {
-        printf("memory fail.\n");
+        fprintf(stderr, "memory fail.\n");
         exit(1);
     }
-    int len = strlen(answer);
+    int len = strlen(hangman.answer);
     for (int i = 0; i < len; i++) 
     {
         hangman.correct[i] = (hangman.answer[i] == ' ') ? ' ' : '_';
@@ -44,20 +44,19 @@ Hangman HM_CreateHangman(char *answer)
     return hangman;
 }
 
-void HM_GuessedWrongPush(char guessed[], char letter)
+bool HM_GuessedWrongPush(char guessed[], char letter)
 {
-    for(int i = 0; i < 26; i++)
+    for(int i = 0; i < ALPHA_SIZE; i++)
     {
-        if(guessed[i] == letter)
-        {
-            return;
-        } 
+        if(guessed[i] == letter)  
+            return false;
         if(guessed[i] == '\0') 
-        {
-            guessed[i] = letter;
-            return;
+        { 
+            guessed[i] = letter; 
+            return true; 
         }
     }
+    return false;
 }
 
 void HM_Guess(Hangman *hangman, char guess)
@@ -82,8 +81,10 @@ void HM_Guess(Hangman *hangman, char guess)
     }
     if(wasWrong)
     {
-        hangman->fails++;
-        HM_GuessedWrongPush(hangman->guessed, letter);
+        if(HM_GuessedWrongPush(hangman->guessed, letter))
+        {
+            hangman->fails++;
+        }      
     }
 
     if (hangman->fails > MAX_TRIES)
@@ -123,6 +124,8 @@ void HM_Display(Hangman *hangman)
 
 void HM_Free(Hangman *hangman)
 {
-    free(hangman->answer);
-    free(hangman->correct);
+    free(hangman->answer);  
+    hangman->answer = NULL;
+    free(hangman->correct); 
+    hangman->correct = NULL;
 }
